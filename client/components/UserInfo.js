@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Avatar, Chip, Subheading, Surface } from "react-native-paper";
-import { avatarLabel, fullname, getHourMinSec } from "./misc";
+import { avatarLabel, fullname, getHourMinSec, hourMinSecFormat } from "./misc";
 
 const UserInfo = ({ user, workStatusDesc, workId, logs }) => {
   const login = logs.filter((log) => log.TimeLogTypeId === 1).pop()?.datetime;
@@ -43,7 +43,7 @@ const UserInfo = ({ user, workStatusDesc, workId, logs }) => {
               style={styles.chipLog}
               selectedColor={"#17800E"}
             >
-              {getHourMinSec(login)}
+              {hourMinSecFormat(login)}
             </Chip>
           )}
           {logout && (
@@ -52,7 +52,7 @@ const UserInfo = ({ user, workStatusDesc, workId, logs }) => {
               style={styles.chipLog}
               selectedColor={"red"}
             >
-              {getHourMinSec(logout)}
+              {hourMinSecFormat(logout)}
             </Chip>
           )}
         </View>

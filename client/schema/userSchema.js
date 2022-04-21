@@ -14,7 +14,7 @@ export const addUserSchema = yup.object().shape({
     .test("is-username-exist", "Already in use.", async (username) => {
       if (username) {
         const res = await isAvailable(username);
-        console.log(res);
+
         if (res === "available") {
           return true;
         } else {

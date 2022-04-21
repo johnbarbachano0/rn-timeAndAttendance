@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { isApple } from "../constants/isApple";
 import { Modal, Portal, TextInput, useTheme } from "react-native-paper";
 import { Picker } from "@react-native-picker/picker";
 import { StyleSheet } from "react-native";
@@ -19,13 +20,29 @@ const CustomPicker = ({
   const [showPicker, setShowPicker] = useState(false);
   const [selected, setSelected] = useState(defaultValue);
 
+  const pickerEl = useRef();
+
+  // Functions
   const getValue = (value) =>
     pickerOptions
       .filter((item) => item?.value === value && item?.label)
       ?.shift()?.label;
 
-  const handlePicker = () => setShowPicker((prev) => !prev);
+  const handlePicker = () => {
+    isApple ? setShowPicker((prev) => !prev) : open();
+  };
+  const open = () => {
+    pickerEl?.current?.focus();
+  };
+  const close = () => {
+    pickerEl?.current?.blur();
+  };
 
+  useEffect(() => {
+    !isApple && (showPicker ? open() : close());
+  }, [showPicker]);
+
+  //Listeners
   useEffect(() => {
     onSelect(selected);
   }, [selected]);
@@ -50,7 +67,7 @@ const CustomPicker = ({
         }
         {...props}
       />
-      {showPicker && (
+      {showPicker && isApple && (
         <Portal>
           <Modal
             visible={showPicker}
@@ -72,6 +89,19 @@ const CustomPicker = ({
             </Picker>
           </Modal>
         </Portal>
+      )}
+      {!isApple && (
+        <Picker
+          selectedValue={selected}
+          onValueChange={(value) => setSelected(value)}
+          style={[styles.picker, stylePicker, { display: "none" }]}
+          itemStyle={{ color: colors.text }}
+          ref={pickerEl}
+        >
+          {pickerOptions.map((item, i) => (
+            <Picker.Item key={i} label={item.label} value={item.value} />
+          ))}
+        </Picker>
       )}
     </>
   );

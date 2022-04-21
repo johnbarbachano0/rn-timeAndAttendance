@@ -5,6 +5,7 @@ import TimeLogsStackNav from "./TimeLogsStackNav";
 import AdminStackNav from "./AdminStackNav";
 import ChangeRequestTabNav from "./ChangeRequestTabNav";
 import HistoryStackNav from "./HistoryStackNav";
+import ReportsStackNav from "./ReportsStackNav";
 
 const HomeNav = () => {
   const Home = createNativeStackNavigator();
@@ -17,11 +18,12 @@ const HomeNav = () => {
         gestureEnabled: false,
       }}
     >
-      <Home.Screen name="HomeStack" component={HomeStackNav} />
-      <Home.Screen name="TimeLogsStack" component={TimeLogsStackNav} />
-      <Home.Screen name="ChangeRequestStack" component={ChangeRequestTabNav} />
       <Home.Screen name="AdminStack" component={AdminStackNav} />
+      <Home.Screen name="ChangeRequestStack" component={ChangeRequestTabNav} />
       <Home.Screen name="HistoryStack" component={HistoryStackNav} />
+      <Home.Screen name="HomeStack" component={HomeStackNav} />
+      <Home.Screen name="ReportsStack" component={ReportsStackNav} />
+      <Home.Screen name="TimeLogsStack" component={TimeLogsStackNav} />
     </Home.Navigator>
   );
 };

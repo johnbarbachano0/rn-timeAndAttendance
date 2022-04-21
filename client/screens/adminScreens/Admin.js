@@ -4,12 +4,11 @@ import { createAlert } from "../../components/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { setMaintenanceData } from "../../features/MaintenanceSlice";
 import { setUsersData } from "../../features/AuthSlice";
-import { StyleSheet, View } from "react-native";
+import { BackHandler, StyleSheet, View } from "react-native";
 import { useGetMaintenanceQuery } from "../../services/MaintenanceService";
 import { useGetAllUsersQuery } from "../../services/AuthService";
 import Loading from "../../components/Loading";
-
-import MaintenanceList from "../../components/MaintenanceList";
+import MenuList from "../../components/MenuList";
 
 export const menu = [
   { id: 1, title: "Change Request Status", icon: "history" },
@@ -59,6 +58,10 @@ const Admin = ({ navigation }) => {
     userError && userRefetch();
   };
 
+  const handleNav = (title, id) => {
+    navigation.navigate("Maintenance", { title, menuId: id });
+  };
+
   useEffect(() => {
     maintenanceData && !maintenanceLoading && setMaintenance();
   }, [maintenanceData]);
@@ -78,13 +81,25 @@ const Admin = ({ navigation }) => {
       );
   }, [userError, maintenanceError]);
 
+  //Backhandler
+  const handleBack = () => {
+    navigation.goBack();
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
+
   if ((userError, maintenanceError, userLoading, maintenanceLoading)) {
     return <Loading />;
   }
 
   return (
     <View style={styles.screen}>
-      <MaintenanceList lists={menu} navigation={navigation} />
+      <MenuList lists={menu} onNav={handleNav} />
     </View>
   );
 };

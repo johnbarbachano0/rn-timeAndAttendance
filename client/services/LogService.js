@@ -1,11 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Constants from "expo-constants";
-const { manifest } = Constants;
-const port = 5007;
-const server =
-  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
-    ? manifest.debuggerHost.split(`:`).shift().concat(`:${port}`)
-    : `api.example.com`;
+import { SERVER_URL } from "@env";
 
 const headers = {
   "Content-Type": "application/json",
@@ -14,7 +8,7 @@ const headers = {
 export const logsApi = createApi({
   reducerPath: "logsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://${server}`,
+    baseUrl: `${SERVER_URL}`,
   }),
   tagTypes: ["Logs"],
   endpoints: (builder) => ({
@@ -47,5 +41,9 @@ export const logsApi = createApi({
   }),
 });
 
-export const { useGetLogsQuery, usePostLogsMutation, usePatchLogsMutation } =
-  logsApi;
+export const {
+  useGetLogsQuery,
+  usePostLogsMutation,
+  usePatchLogsMutation,
+  useGetDurationReportQuery,
+} = logsApi;

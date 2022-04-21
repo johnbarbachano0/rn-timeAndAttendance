@@ -1,13 +1,15 @@
 import * as React from "react";
+import { ApproveRequestIcon, MyRequestIcon } from "../constants/Icons";
+// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useTheme } from "react-native-paper";
 import ApprovalsChangeRequestNav from "./ApprovalsChangeRequestNav";
 import MyChangeRequestNav from "./MyChangeRequestNav";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import { useTheme } from "react-native-paper";
-import { MyRequestIcon, ApproveRequestIcon } from "../constants/Icons";
 
 const ChangeRequestTabNav = () => {
-  const Tab = createMaterialBottomTabNavigator();
-  const { colors } = useTheme();
+  // const Tab = createMaterialBottomTabNavigator();
+  const { dark: isDark, colors } = useTheme();
+  const Tab = createBottomTabNavigator();
 
   return (
     <Tab.Navigator
@@ -15,6 +17,14 @@ const ChangeRequestTabNav = () => {
       activeColor={colors.text}
       inactiveColor={colors.disabled}
       barStyle={{ backgroundColor: colors.surface }}
+      screenOptions={{
+        headerShown: false,
+        gestureEnabled: true,
+        headerStyle: {
+          backgroundColor: isDark ? colors.card : colors.header,
+        },
+        headerTintColor: colors.text,
+      }}
     >
       <Tab.Screen
         name="MyChangeRequest"

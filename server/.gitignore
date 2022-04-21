@@ -1,4 +1,6 @@
-.env
+
+xmigrations
+env
 node_modules/
 .expo/
 dist/

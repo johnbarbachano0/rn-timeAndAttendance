@@ -13,7 +13,7 @@ const LogButton = ({ type, onLog, button, loading, style }) => {
         buttonLabel={button.label}
         icon={button.icon}
         iconColor={"#fff"}
-        size={50}
+        size={isApple ? 50 : 30}
         style={styles.button}
         disabled={type === 3 ? true : false || loading}
       />
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    paddingVertical: 30,
+    paddingVertical: 15,
     elevation: 4,
   },
   ios: {

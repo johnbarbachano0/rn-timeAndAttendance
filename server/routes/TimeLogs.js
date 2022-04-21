@@ -4,6 +4,7 @@ const router = express.Router();
 const { TimeLogs, TimeLogTypes, Users } = require("../models");
 const { createTrail } = require("../middlewares/miscjs");
 const { Op } = require("sequelize");
+const { timeDifference } = require("../middlewares/miscjs");
 
 //Post New TimeLog
 router.post("/", (req, res, next) => {
@@ -131,6 +132,63 @@ router.patch("/", (req, res, next) => {
         res.send(false);
       });
   });
+});
+
+//Reports - Duration
+router.get("/report/duration", async (req, res, next) => {
+  const { uid, q, filter } = req.query;
+  const currDate = filter ? new Date(filter) : new Date();
+  const start = new Date(currDate?.getFullYear(), currDate?.getMonth());
+  const end = new Date(currDate?.getFullYear(), currDate?.getMonth() + 1);
+  const queryObj = { [Op.substring]: q };
+  const queryDate = { [Op.between]: [start, end] };
+
+  console.log("filter");
+  console.log(start);
+  console.log(end);
+  const timein = await TimeLogs.findAll({
+    where: {
+      TimeLogTypeId: 1,
+      datetime: queryDate,
+      UserId: uid,
+    },
+    attributes: ["id", "date", ["datetime", "timeIn"], "UserId"],
+    order: [["datetime", "DESC"]],
+  });
+
+  const timeout = await TimeLogs.findAll({
+    where: {
+      TimeLogTypeId: 2,
+      datetime: queryDate,
+      UserId: uid,
+    },
+    attributes: ["id", "date", ["datetime", "timeOut"], "UserId"],
+    order: [["datetime", "DESC"]],
+  });
+
+  const joined = timein.map((data) => {
+    const dataIn = data?.dataValues;
+    const outTime = timeout.filter((dataTimeOut) => {
+      const dataOut = dataTimeOut?.dataValues;
+      if (dataOut?.date === dataIn?.date) {
+        return dataOut.timeOut;
+      }
+    });
+
+    const data_timeout = outTime?.pop()?.dataValues?.timeOut;
+    const data_timein = dataIn?.timeIn;
+    const diff = timeDifference(data_timeout, data_timein, "hour");
+
+    const newData = {
+      ...dataIn,
+      timeOut: data_timeout,
+      duration: diff,
+    };
+
+    return newData;
+  });
+
+  res.json(joined);
 });
 
 module.exports = router;

@@ -34,6 +34,12 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          title: "Reports",
+          status: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ]),
     ]);
   },

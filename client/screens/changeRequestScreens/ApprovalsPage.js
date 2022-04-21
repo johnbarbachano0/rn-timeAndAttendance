@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { capitalize } from "../../components/misc";
 import { createAlert } from "../../components/Alert";
-import { FAB } from "react-native-paper";
-import {
-  setChangeRequestsData,
-  setApprovalsData,
-} from "../../features/ChangeRequestSlice";
-import { StyleSheet, View } from "react-native";
+import { setApprovalsData } from "../../features/ChangeRequestSlice";
+import { BackHandler, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetChangeRequestQuery,
-  useGetApprovalsQuery,
-} from "../../services/ChangeRequestService";
+import { useGetApprovalsQuery } from "../../services/ChangeRequestService";
 import { useChangeRequest } from "../../helpers/useChangeRequest";
 import CustomTable from "../../components/CustomTable";
 import Loading from "../../components/Loading";
@@ -38,8 +31,6 @@ const ApprovalsPage = ({ navigation, route }) => {
   });
 
   //Functions
-  const handleAdd = () => handleNav("add", { type: "add" });
-
   const handleNav = (type, dataVal) => {
     type === "approval" &&
       navigation.navigate("ApprovalPage", {
@@ -80,6 +71,18 @@ const ApprovalsPage = ({ navigation, route }) => {
     setLoading(approvalsLoading);
   }, [approvalsLoading]);
 
+  //Backhandler
+  const handleBack = () => {
+    navigation.goBack();
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
+
   if (error || loading) {
     return <Loading />;
   }
@@ -105,10 +108,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   table: { paddingBottom: 10 },
-  fab: {
-    position: "absolute",
-    margin: 16,
-    left: 40,
-    bottom: 30,
-  },
 });

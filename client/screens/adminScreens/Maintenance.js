@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { isApple } from "../../constants/isApple";
 import { capitalize, isDisplay } from "../../components/misc";
 import { FAB } from "react-native-paper";
 import { StyleSheet } from "react-native";
@@ -46,6 +47,18 @@ const Maintenance = ({ route, navigation }) => {
     data?.type && handleNav(data?.type, data);
   }, [data]);
 
+  //Backhandler
+  const handleBack = () => {
+    navigation.goBack();
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
+
   //Functions
   const handleNav = (type, dataVal) =>
     navigation.navigate("AddEdit", {
@@ -76,7 +89,7 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     margin: 16,
-    left: 40,
+    left: isApple ? 40 : 20,
     bottom: 50,
   },
 });

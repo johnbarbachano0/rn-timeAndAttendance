@@ -57,8 +57,28 @@ const isAdmin = (id) => {
     });
 };
 
+const timeDifference = (d1, d2, type) => {
+  try {
+    const diff = Math.abs(d2 - d1) || 0;
+    const diffSec = diff / (1000 * 60);
+    const diffHour = diff / (1000 * 60 * 60);
+    const diffDay = diff / (1000 * 60 * 60 * 24);
+    switch (type) {
+      case "hour":
+        return diffHour.toFixed(2);
+      case "day":
+        return diffDay.toFixed(2);
+      default:
+        return diffSec.toFixed(2);
+    }
+  } catch (error) {
+    return 0;
+  }
+};
+
 module.exports = {
   validPassword,
+  timeDifference,
   genHash,
   getAdminUid,
   isAdmin,

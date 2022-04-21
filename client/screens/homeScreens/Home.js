@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { createAlert } from "../../components/Alert";
 import { isApple } from "../../constants/isApple";
 import { isDisplay } from "../../components/misc";
-import { Image, StyleSheet, View } from "react-native";
+import { BackHandler, Image, StyleSheet, View } from "react-native";
 import { setAuthData } from "../../features/AuthSlice";
 import { setLogsData } from "../../features/LogsSlice";
 import { setAccessData } from "../../features/MaintenanceSlice";
@@ -15,33 +15,7 @@ import LogButton from "../../components/LogButton";
 import logo from "../../assets/therobotcompany.png";
 import ModulesList from "../../components/ModulesList";
 import UserInfo from "../../components/UserInfo";
-
-export const typeData = [
-  {
-    type: 0,
-    label: "Confirm?",
-    color: "#d2d2d2",
-    icon: "help-box",
-  },
-  {
-    type: 1,
-    label: "Time In",
-    color: "#5BAB5A",
-    icon: "login-variant",
-  },
-  {
-    type: 2,
-    label: "Time Out",
-    color: "#FFC24C",
-    icon: "login-variant",
-  },
-  {
-    type: 3,
-    label: "Completed",
-    color: "#207178",
-    icon: "checkbox-marked-outline",
-  },
-];
+import { typeData } from "../../helpers/DataType";
 
 const Home = ({ navigation }) => {
   // Hooks & Constants
@@ -144,13 +118,22 @@ const Home = ({ navigation }) => {
     dispatch(setAccessData(access));
   }, [access]);
 
+  //Backhandler
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleConfirm
+    );
+    return () => backHandler.remove();
+  }, []);
+
   // Functions
   const handleConfirm = () =>
     createAlert(
       "twoButton",
       "Confirm logout?",
-      { one: "Yes", two: "No" },
       "Are you sure you want to logout?",
+      { one: "Yes", two: "No" },
       handleLogout,
       () => {}
     );
@@ -212,11 +195,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 40,
     width: "100%",
-  },
-  iosCont: {
-    marginTop: 90,
   },
   log: {
     position: "absolute",

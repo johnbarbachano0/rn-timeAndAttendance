@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     width: "100%",
-    position: "absolute",
-    top: 0,
+    paddingTop: 50,
+    paddingBottom: 25,
   },
   ios: { paddingVertical: 30, paddingTop: 60 },
 });

@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { isApple } from "../constants/isApple";
 import { dateConverter, timeConverter } from "./misc";
 import { Modal, Portal, TextInput, useTheme } from "react-native-paper";
 import { StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePickerAndroid from "@react-native-community/datetimepicker";
 import ErrorText from "./ErrorText";
 
 const DatePicker = ({
@@ -19,18 +21,22 @@ const DatePicker = ({
 }) => {
   const { colors, dark } = useTheme();
   const [show, setShow] = useState(false);
+  const [date, setDate] = useState(new Date(value));
 
-  const handleCalendar = () => setShow((prev) => !prev);
+  const handleDateChange = (event, val) => {
+    const value = val || new Date();
+    setShow(isApple);
+    setDate(value);
+    onChange(value);
+  };
+
+  const handleCalendar = () => {
+    setShow((prev) => !prev);
+  };
 
   const handleDisplay = () => {
-    var val;
-    if (value) {
-      val = type === "date" ? dateConverter(value) : timeConverter(value);
-    } else {
-      const date = new Date();
-      val = type === "date" ? dateConverter(date) : timeConverter(date);
-    }
-    return val;
+    const isDate = type === "date";
+    return isDate ? dateConverter(date) : timeConverter(date);
   };
 
   return (
@@ -41,7 +47,6 @@ const DatePicker = ({
         placeholder={label}
         error={error ? true : false}
         value={handleDisplay()}
-        onChangeText={onChange}
         autoCapitalize={"words"}
         dense={true}
         disabled={disabled}
@@ -56,7 +61,7 @@ const DatePicker = ({
         {...props}
       />
 
-      {show && (
+      {show && isApple && (
         <Portal>
           <Modal
             visible={show}
@@ -67,10 +72,10 @@ const DatePicker = ({
             ]}
           >
             <DateTimePicker
-              value={new Date(value)}
+              value={date}
               mode={type}
               display={display ? display : "spinner"}
-              onChange={onChange}
+              onChange={handleDateChange}
               style={styles.picker}
               maximumDate={maximumDate}
               minimumDate={minimumDate}
@@ -78,6 +83,19 @@ const DatePicker = ({
           </Modal>
         </Portal>
       )}
+
+      {show && !isApple && (
+        <DateTimePickerAndroid
+          value={date}
+          mode={type}
+          display={display ? display : "default"}
+          onChange={handleDateChange}
+          style={styles.picker}
+          maximumDate={maximumDate}
+          minimumDate={minimumDate}
+        />
+      )}
+
       {error && (
         <ErrorText style={{ width: "100%" }}>
           &#x26A0; {error?.message}

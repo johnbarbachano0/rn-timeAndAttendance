@@ -9,6 +9,7 @@ import {
 import { isApple } from "../../constants/isApple";
 import { maintenanceSchema, tagSchema } from "../../schema/maintenanceSchema";
 import {
+  BackHandler,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
@@ -126,6 +127,18 @@ const AddEdit = ({ navigation, route }) => {
   useEffect(() => {
     setDisabled(loading || handleDisplay(8));
   }, [loading]);
+
+  //Backhandler
+  const handleBack = () => {
+    navigation.goBack();
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
 
   //Functions
   const handleChange = (value, field) => {

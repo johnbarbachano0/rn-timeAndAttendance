@@ -15,7 +15,6 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
           RoleId: 1,
-          WorkStatusId: 1,
         },
       ]),
     ]);

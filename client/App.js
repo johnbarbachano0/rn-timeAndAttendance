@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
-import React, { useState, useEffect } from "react";
-import { AppRegistry, useColorScheme } from "react-native";
+import React, { useState } from "react";
+import { AppRegistry, useColorScheme, View } from "react-native";
 import { Provider as PaperProvider } from "react-native-paper";
 import {
   NavigationContainer,
@@ -13,20 +13,6 @@ import Navigation from "./navigation/Navigation";
 import { store } from "./store/store";
 import { Provider as ReduxProvider } from "react-redux";
 import LoadApp from "./components/LoadApp";
-
-// import { init, dropTable } from "./helpers/db";
-
-// init()
-//   .then(() => {
-//     console.log("Initialized database");
-//   })
-//   .catch((error) => {
-//     Alert.alert("Database Error!", "Restart App.", [
-//       { text: "OK", onPress: () => {} },
-//     ]);
-//   });
-
-// dropTable("places").then((res) => console.log(res));
 
 export default function App() {
   const colorScheme = useColorScheme();
@@ -60,13 +46,22 @@ export default function App() {
             colorScheme === "light" ? CombinedDefaultTheme : CombinedDarkTheme
           }
         >
-          <NavigationContainer
-            theme={
-              colorScheme === "light" ? CombinedDefaultTheme : CombinedDarkTheme
-            }
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: colorScheme === "light" ? "#fff" : "#000",
+            }}
           >
-            <Navigation />
-          </NavigationContainer>
+            <NavigationContainer
+              theme={
+                colorScheme === "light"
+                  ? CombinedDefaultTheme
+                  : CombinedDarkTheme
+              }
+            >
+              <Navigation />
+            </NavigationContainer>
+          </View>
         </PaperProvider>
       )}
     </ReduxProvider>

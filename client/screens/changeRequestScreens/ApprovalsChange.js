@@ -8,7 +8,7 @@ import {
   filterObj,
   timeConverter,
 } from "../../components/misc";
-import { StyleSheet, View } from "react-native";
+import { BackHandler, StyleSheet, View } from "react-native";
 import { Button, Card, Chip, Subheading } from "react-native-paper";
 import { usePostApprovalMutation } from "../../services/ChangeRequestService";
 import { useSelector } from "react-redux";
@@ -27,8 +27,6 @@ const ApprovalsChange = ({ navigation, route }) => {
   const isForApproval = data?.ChangeRequestStatusId === 1;
 
   const { accessData } = useSelector((state) => state.maintenance);
-  console.log("ApprovalChanges");
-  console.log(accessData);
   const icon =
     data?.ChangeRequestStatusId === 1
       ? { name: "circle-slice-3", color: "#FFCC00" }
@@ -105,6 +103,18 @@ const ApprovalsChange = ({ navigation, route }) => {
         () => {}
       );
   }, [error]);
+
+  //Backhandler
+  const handleBack = () => {
+    navigation.goBack();
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={styles.screen}>

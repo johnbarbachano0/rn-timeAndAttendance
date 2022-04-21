@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Card, Paragraph } from "react-native-paper";
 import { createAlert } from "../../components/Alert";
 import { getRound } from "../../components/misc";
-import { StyleSheet, Text, View } from "react-native";
-import { typeData } from "./Home";
+import { BackHandler, StyleSheet, Text, View } from "react-native";
+import { typeData } from "../../helpers/DataType";
 import { usePostLogsMutation } from "../../services/LogService";
 import { useSelector } from "react-redux";
 import LogButton from "../../components/LogButton";
@@ -64,6 +64,15 @@ const Map = ({ navigation, route }) => {
         handleError();
       });
   };
+
+  //Backhandler
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={styles.screen}>

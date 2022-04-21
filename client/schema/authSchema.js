@@ -1,7 +1,8 @@
 import * as yup from "yup";
+import { SERVER_URL } from "@env";
 
 const isAvailable = async (username) =>
-  await fetch(`http://192.168.100.119:5007/auth?uname=${username}`)
+  await fetch(`${SERVER_URL}/auth?uname=${username}`)
     .then((response) => response.json())
     .then((data) => data.message);
 

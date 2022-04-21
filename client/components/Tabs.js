@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Avatar, Caption, TouchableRipple, Surface } from "react-native-paper";
+import { isApple } from "../constants/isApple";
 
 const Tabs = ({ bgColor, icon, label, onPress, style }) => {
   return (
@@ -10,10 +11,10 @@ const Tabs = ({ bgColor, icon, label, onPress, style }) => {
         rippleColor="rgba(255, 255, 255, .95)"
         elevation={1000}
       >
-        <View style={styles.item}>
+        <View style={[styles.item, { padding: isApple ? 10 : 5 }]}>
           <Avatar.Icon
             icon={icon}
-            size={75}
+            size={isApple ? 75 : 60}
             style={{ backgroundColor: "transparent" }}
           />
           <Caption style={styles.label}>{label}</Caption>
@@ -44,7 +45,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
   },
   label: {
     color: "#fff",

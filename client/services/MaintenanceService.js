@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Constants from "expo-constants";
-const { manifest } = Constants;
-const port = 5007;
-const server =
-  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
-    ? manifest.debuggerHost.split(`:`).shift().concat(`:${port}`)
-    : `api.example.com`;
+import { SERVER_URL } from "@env";
+// import Constants from "expo-constants";
+// const { manifest } = Constants;
+// const port = 5007;
+// const server =
+//   typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+//     ? manifest.debuggerHost.split(`:`).shift().concat(`:${port}`)
+//     : `api.example.com`;
 
 const headers = {
   "Content-Type": "application/json",
@@ -14,7 +15,7 @@ const headers = {
 export const maintenanceApi = createApi({
   reducerPath: "maintenaneApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: `http://${server}`,
+    baseUrl: `${SERVER_URL}`,
   }),
   tagTypes: ["Maintenance"],
   endpoints: (builder) => ({

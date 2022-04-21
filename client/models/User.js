@@ -1,4 +1,4 @@
-//User1
+// // User1;
 // const user = {
 //   id: "bd9b7fe9-dc8d-4326-8ca9-84d4352201d0",
 //   username: "john1234",
@@ -18,7 +18,6 @@
 // };
 
 // //User2;
-
 // const user = {
 //   id: "fe6b9933-74eb-43c8-9b4d-e488e6d22532",
 //   username: "john1234567",
@@ -37,7 +36,7 @@
 //   isLoggedIn: true,
 // };
 
-// //Admin
+////Admin
 const user = {
   id: "b6f2106d-6306-44d0-af4a-f581ad466aaf",
   username: "admin",

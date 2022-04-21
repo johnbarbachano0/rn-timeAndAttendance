@@ -11,6 +11,7 @@ const initialState = {
   todayLogs: [],
   prevDayLogs: [],
   prevDay: null,
+  durationReport: [],
 };
 
 export const LogsSlice = createSlice({
@@ -43,9 +44,12 @@ export const LogsSlice = createSlice({
       state.prevDayLogs = prevDayLogs;
       state.prevDay = prevDay;
     },
+    setDurationReport: (state, action) => {
+      state.durationReport = action.payload;
+    },
   },
 });
 
-export const { setLogsData } = LogsSlice.actions;
+export const { setLogsData, setDurationReport } = LogsSlice.actions;
 
 export default LogsSlice.reducer;

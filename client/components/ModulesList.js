@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 import { isDisplay } from "./misc";
 import React from "react";
 import Tabs from "./Tabs";
@@ -46,7 +46,7 @@ const ModulesList = ({ navigation, modules, onLogout, accessData }) => {
       customStyle: handleDisplay(4) && { display: "none" },
     },
     {
-      order: 5,
+      order: 6,
       id: 5,
       icon: "logout",
       label: getDescription(5),
@@ -54,35 +54,38 @@ const ModulesList = ({ navigation, modules, onLogout, accessData }) => {
       path: onLogout,
       customStyle: handleDisplay(5) && { display: "none" },
     },
-  ];
+    {
+      order: 5,
+      id: 6,
+      icon: "chart-areaspline",
+      label: getDescription(6),
+      bgColor: "#466C2C",
+      path: () => navigation.navigate("ReportsStack", { screen: "Reports" }),
+      customStyle: handleDisplay(12) && { display: "none" },
+    },
+  ].sort((a, b) => (a.order < b.order ? -1 : a.order > b.order ? 1 : 0));
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.modules}>
-        {moduleTabs.map((module) => (
-          <Tabs
-            key={module.id}
-            bgColor={module.bgColor}
-            icon={module.icon}
-            label={module.label}
-            onPress={module.path}
-            style={module.customStyle}
-          />
-        ))}
-      </View>
-    </View>
+    <ScrollView contentContainerStyle={styles.modules}>
+      {moduleTabs.map((module) => (
+        <Tabs
+          key={module.id}
+          bgColor={module.bgColor}
+          icon={module.icon}
+          label={module.label}
+          onPress={module.path}
+          style={module.customStyle}
+        />
+      ))}
+    </ScrollView>
   );
 };
 
 export default ModulesList;
 
 const styles = StyleSheet.create({
-  screen: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   modules: {
+    flexGrow: 1,
     width: "100%",
     flexDirection: "row",
     flexWrap: "wrap",

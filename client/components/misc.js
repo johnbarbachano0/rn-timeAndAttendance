@@ -1,3 +1,6 @@
+import "intl";
+import "intl/locale-data/jsonp/en";
+
 export function dateTimeConverter(ISOdate, line) {
   const dateFormat = new Date(ISOdate).toLocaleDateString();
   const timeFormat = new Date(ISOdate).toLocaleTimeString();
@@ -58,7 +61,24 @@ export const getHourMinSec = (date) => {
   });
 };
 
-export const combineDateTime = (currDate, currTime) => {
+export const hourMinFormat = (date) => {
+  return new Intl.DateTimeFormat("default", {
+    hour: "numeric",
+    minute: "numeric",
+  }).format(new Date(date));
+};
+
+export const hourMinSecFormat = (date) => {
+  return new Intl.DateTimeFormat("default", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  }).format(new Date(date));
+};
+
+export const combineDateTime = (date, time) => {
+  const currDate = new Date(date);
+  const currTime = new Date(time);
   const yr = currDate?.getFullYear();
   const mon = currDate?.getMonth();
   const d = currDate?.getDate();

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "attendance",
+    "name": "Roboverse-tna",
     "slug": "rn-roboverse-tna",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,19 +8,24 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#81E8FF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.therobotco.rnroboversetna"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#81E8FF"
+      },
+      "package": "com.therobotco.rnroboversetna",
+      "config": {
+        "googleMaps": { "apiKey": "AIzaSyBMDw9VrJ7aH9MDZ2HMnoSt_NZuMWzGuAY" }
       }
     },
     "web": {

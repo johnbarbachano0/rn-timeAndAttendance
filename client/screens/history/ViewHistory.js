@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, Subheading } from "react-native-paper";
 import { dateTimeConverter, objectToText } from "../../components/misc";
 import { isApple } from "../../constants/isApple";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { BackHandler, StyleSheet, ScrollView, View } from "react-native";
 
 const ViewHistory = ({ route }) => {
   //Hooks & Constants
@@ -43,6 +43,16 @@ const ViewHistory = ({ route }) => {
       value: dateTimeConverter(data?.updatedAt),
     },
   ];
+
+  //Backhandler
+  const handleBack = () => navigation.goBack();
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={styles.screen}>
@@ -87,7 +97,7 @@ const styles = StyleSheet.create({
   form: {
     flexGrow: 1,
     alignItems: "flex-start",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     paddingTop: isApple ? 10 : 5,
     paddingBottom: isApple ? 50 : 5,
     minWidth: isApple ? "95%" : "99%",

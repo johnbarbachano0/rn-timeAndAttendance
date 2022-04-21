@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FAB, Surface, Title } from "react-native-paper";
-import { StyleSheet, View } from "react-native";
+import { BackHandler, StyleSheet, View } from "react-native";
 import { setLogsData } from "../features/LogsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetLogsQuery } from "../services/LogService";
-import MonthYearPicker from "../components/MonthYearPicker";
-import CustomTable from "../components/CustomTable";
 import { useTimelog } from "../helpers/useTimelog";
+import CustomTable from "../components/CustomTable";
+import MonthYearPicker from "../components/MonthYearPicker";
 
 const TimeLogs = () => {
   //Hooks & Constants
@@ -45,6 +45,16 @@ const TimeLogs = () => {
   useEffect(() => {
     myLogs && setMonthLogs(getMonthLogs());
   }, [myLogs]);
+
+  //Backhandler
+  const handleBack = () => navigation.goBack();
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
 
   //Functions
   const handleFilter = () => setShowDialog(true);

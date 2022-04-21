@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { isApple } from "../../constants/isApple";
 import { capitalize, isDisplay } from "../../components/misc";
 import { createAlert } from "../../components/Alert";
 import { FAB } from "react-native-paper";
-import {
-  setChangeRequestsData,
-  setApprovalsData,
-} from "../../features/ChangeRequestSlice";
-import { StyleSheet, View } from "react-native";
+import { setChangeRequestsData } from "../../features/ChangeRequestSlice";
+import { BackHandler, StyleSheet, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  useGetChangeRequestQuery,
-  useGetApprovalsQuery,
-} from "../../services/ChangeRequestService";
+import { useGetChangeRequestQuery } from "../../services/ChangeRequestService";
 import { useChangeRequest } from "../../helpers/useChangeRequest";
 import CustomTable from "../../components/CustomTable";
 import Loading from "../../components/Loading";
 
 const ChangeRequest = ({ navigation, route }) => {
   // Hooks and Consts
-  const { name } = route;
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const { data, changeReqHeaders } = useChangeRequest();
@@ -83,6 +77,16 @@ const ChangeRequest = ({ navigation, route }) => {
     setLoading(changeLoading);
   }, [changeLoading]);
 
+  //Backhandler
+  const handleBack = () => navigation.goBack();
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
+
   if (error || loading) {
     return <Loading />;
   }
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     margin: 16,
-    left: 40,
+    left: isApple ? 40 : 20,
     bottom: 30,
   },
 });

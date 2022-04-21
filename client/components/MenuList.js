@@ -2,11 +2,7 @@ import React from "react";
 import { List } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 
-const MaintenanceList = ({ lists, navigation }) => {
-  const handleNav = (title, id) => {
-    navigation.navigate("Maintenance", { title, menuId: id });
-  };
-
+const MenuList = ({ lists, onNav }) => {
   return (
     <View style={styles.container}>
       <List.Section style={styles.section}>
@@ -15,7 +11,8 @@ const MaintenanceList = ({ lists, navigation }) => {
             key={list.id}
             title={list.title}
             left={() => <List.Icon icon={list.icon} />}
-            onPress={() => handleNav(list.title, list.id)}
+            onPress={() => onNav(list.title, list.id)}
+            style={list.style}
           />
         ))}
       </List.Section>
@@ -23,7 +20,7 @@ const MaintenanceList = ({ lists, navigation }) => {
   );
 };
 
-export default MaintenanceList;
+export default MenuList;
 
 const styles = StyleSheet.create({
   container: {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { dateConverter, timeConverter } from "../components/misc";
 import { IconButton } from "react-native-paper";
 import { LoginIcon, LogoutIcon } from "../constants/Icons";
+import { isApple } from "../constants/isApple";
 
 export const useChangeRequest = () => {
   const [data, setData] = useState();
@@ -44,7 +45,7 @@ export const useChangeRequest = () => {
       label: "Status",
       isNum: false,
       multiline: false,
-      style: { flex: 1, alignItems: "center", justifyContent: "center" },
+      style: { flex: 0.75, alignItems: "center", justifyContent: "center" },
     },
     {
       id: 5,

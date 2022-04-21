@@ -9,6 +9,7 @@ import {
 } from "../../components/misc";
 import { isApple } from "../../constants/isApple";
 import {
+  BackHandler,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
@@ -32,7 +33,8 @@ const AddEditChange = ({ navigation, route }) => {
   currDate.setSeconds(0);
   currDate.setMilliseconds(0);
   const { data } = route.params;
-
+  const isAdd = data?.type === "add";
+  const isEdit = data?.type === "edit";
   const { id: uid, RoleId: roleId } = useSelector(
     (state) => state.auth.authData
   );
@@ -93,19 +95,16 @@ const AddEditChange = ({ navigation, route }) => {
   const handleDisplay = (id) => !isDisplay(id, accessData);
 
   const onSubmit = (dataSubmit) => {
-    var dataVal =
-      data?.type === "edit"
-        ? { ...dirtyValues(dirtyFields, dataSubmit), id: data.id }
-        : dataSubmit;
+    var dataVal = isEdit
+      ? { ...dirtyValues(dirtyFields, dataSubmit), id: data.id }
+      : dataSubmit;
 
     if (dataSubmit?.deleted) {
       dataVal = { ...dataVal, deleted: true, status: false };
     }
-
-    if (data?.type === "add") {
+    if (isAdd) {
       dataVal = { ...dataVal, UserId: uid };
     }
-
     const params = {
       data: dataVal,
       uid,
@@ -152,9 +151,24 @@ const AddEditChange = ({ navigation, route }) => {
 
   useEffect(() => {
     setDisabled(
-      loading || handleDisplay(8) || data?.ChangeRequestStatusId !== 1
+      loading ||
+        (isAdd && handleDisplay(7)) ||
+        (isEdit && handleDisplay(8)) ||
+        (isEdit && data?.ChangeRequestStatusId !== 1)
     );
   }, [loading, data]);
+
+  //Backhandler
+  const handleBack = () => {
+    navigation.goBack();
+  };
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -176,7 +190,7 @@ const AddEditChange = ({ navigation, route }) => {
                 label={"Date"}
                 error={errors.date}
                 style={styles.input}
-                onChange={(evt, value) => handleChange(value, "date")}
+                onChange={(value) => handleChange(value, "date")}
                 value={value}
                 disabled={isDisabled}
                 type={"date"}
@@ -193,7 +207,7 @@ const AddEditChange = ({ navigation, route }) => {
                 label={"Time"}
                 error={errors.datetime}
                 style={styles.input}
-                onChange={(evt, value) => handleChange(value, "datetime")}
+                onChange={(value) => handleChange(value, "datetime")}
                 value={value}
                 disabled={isDisabled}
                 type={"time"}
@@ -253,7 +267,7 @@ const AddEditChange = ({ navigation, route }) => {
             )}
           />
 
-          {data?.type === "edit" && (
+          {isEdit && (
             <Card style={styles.card}>
               <Title>Other Details:</Title>
               {details.map((item, i) => (
@@ -270,12 +284,12 @@ const AddEditChange = ({ navigation, route }) => {
         <View
           style={[
             styles.buttonCont,
-            (handleDisplay(8) || data?.ChangeRequestStatusId !== 1) && {
+            isDisabled && {
               display: "none",
             },
           ]}
         >
-          {data?.type === "edit" && (
+          {isEdit && (
             <Button
               mode="contained"
               onPress={handleDelete}

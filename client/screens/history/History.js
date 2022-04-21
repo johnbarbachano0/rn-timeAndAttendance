@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { BackHandler, StyleSheet, View } from "react-native";
 import { setHistoryData } from "../../features/HistorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetHistoryQuery } from "../../services/HistoryService";
@@ -59,6 +59,16 @@ const History = ({ navigation, route }) => {
   useEffect(() => {
     setError(errHistory);
   }, [errHistory]);
+
+  //Backhandler
+  const handleBack = () => navigation.goBack();
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBack
+    );
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={styles.screen}>
